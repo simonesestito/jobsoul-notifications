@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   scraper:
-    build: .
+    image: simonesestito/jobsoul-notifications:latest
     env_file:
       - .env
     volumes:
