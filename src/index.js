@@ -5,8 +5,12 @@
  * then send a private notification with the new ones, if any.
  */
 
+require('dotenv').config()
 const fetch = require('node-fetch');
 const { parse } = require('node-html-parser');
+const { TELEGRAM_BOT_TOKEN, TELEGRAM_RECIPIENT_ID } = require('./env');
+
+const oldJobs = []; // TODO Persistance
 
 (async () => {
     const req = await fetch("http://www.jobsoul.it/SoulWeb/ricercaTirocini.action", {
@@ -26,12 +30,29 @@ const { parse } = require('node-html-parser');
     const document = parse(await req.text());
     const jobDivs = document.querySelectorAll('.grid_24.ol');
     const jobs = [...jobDivs].map(jobDiv => ({
-        id: 'https://www.jobsoul.it/SoulWeb/' + jobDiv.querySelector('.ol-title').getAttribute('href'),
+        url: 'https://www.jobsoul.it/SoulWeb/' + jobDiv.querySelector('.ol-title').getAttribute('href'),
         title: jobDiv.querySelector('.ol-title').textContent.trim(),
         company: jobDiv.querySelector('.ol-attr > b').textContent.trim(),
         compensation: jobDiv.querySelector('.ol-attr').textContent.split('//')[2].trim(),
         duration: jobDiv.querySelector('.ol-attr').textContent.split('//')[3].trim(),
-    }));
+    })).filter(job => !oldJobs.includes(job.url));
 
     console.log(jobs);
+
+    for (const job of jobs) {
+        // Send Telegram notification
+        await fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage', {
+            method: 'POST',
+            body: JSON.stringify({
+                chat_id: TELEGRAM_RECIPIENT_ID,
+                text: `<b>${job.title}</b>\n${job.company}\n${job.duration} - ${job.compensation}\n\n${job.url}`,
+                parse_mode: 'HTML',
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+        });
+    }
+
 })().catch(err => console.error(err));

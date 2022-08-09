@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/simonesestito/jobsoul-notifications#readme",
   "dependencies": {
+    "dotenv": "^16.0.1",
     "node-fetch": "^2.6.1",
     "node-html-parser": "^5.3.3"
   }
