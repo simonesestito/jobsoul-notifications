@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/simonesestito/jobsoul-notifications/issues"
   },
-  "homepage": "https://github.com/simonesestito/jobsoul-notifications#readme"
+  "homepage": "https://github.com/simonesestito/jobsoul-notifications#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "node-html-parser": "^5.3.3"
+  }
 }
