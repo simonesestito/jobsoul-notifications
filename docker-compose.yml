@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  scraper:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - ./jobs.json:/app/jobs.json
