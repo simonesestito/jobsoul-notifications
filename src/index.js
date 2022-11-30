@@ -48,7 +48,7 @@ const JOB_IDS_FILE = './jobs.json';
             method: 'POST',
             body: JSON.stringify({
                 chat_id: TELEGRAM_RECIPIENT_ID,
-                text: `<b>${job.title}</b>\n${job.company}\n${job.duration} - ${job.compensation}\n\n${job.url}`,
+                text: `<b>${job.title}</b>\n${job.company}\n${job.duration} - ${job.compensation}/mese\n\n${job.url}`,
                 parse_mode: 'HTML',
             }),
             headers: {
